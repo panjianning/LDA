@@ -47,5 +47,5 @@ python tools/jieba_cut.py
 [Topic 13] 年 大学 学校 学院 为 卡内基 校园 中山大学 国立 位于 清华大学 世界 名 拥有 斯坦福
 [Topic 14] 年 月 了 日 他 为 成为 曾 生于 新 影响 称为 公司 进入 赢得
 ```
-## To-do
-实现Metropolis–Hastings采样；计算Perplexity。
+## 参考
+[Finding scientific topics](http://psiexp.ss.uci.edu/research/papers/sciencetopics.pdf)
