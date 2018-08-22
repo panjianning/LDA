@@ -1,6 +1,6 @@
 # LDA
-[![License](https://img.shields.io/pypi/l/Django.svg)](bsd)
-[![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)](cpp)
+[![License](https://img.shields.io/pypi/l/Django.svg)](LICENSE)
+[![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)]()
 
 使用Collapsed Gibbs sampling训练的Latent Dirichlet Allocation模型
 
