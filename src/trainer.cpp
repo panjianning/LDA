@@ -23,16 +23,17 @@ Trainer::Trainer(std::shared_ptr<TopicModel> model, SamplerType type) {
     }
 }
 
-void Trainer::init_docs(std::vector<std::vector<std::string> >& raw_docs) {
+void Trainer::init_trainer(std::vector<std::vector<std::string> >& raw_docs) {
     for(auto& raw_doc : raw_docs) {
         LDADoc doc(_model->num_topics());
         doc.set_alpha(_model->alpha());
-        for (const auto& token : raw_doc) {
-            int id = _model->term_id(token);
+        for (const auto& word : raw_doc) {
+            int id = _model->word_id(word);
             if (id != OOV) {
-                int init_topic = rand_k(_model->num_topics());
-                doc.add_token({init_topic, id});
-                _model->insert_word_topic(id, init_topic);
+                int topic = rand_k(_model->num_topics());
+                Token token = {topic, id};
+                doc.add_token(token);
+                _model->add_token(token);
             } else {
                 // Log::Debug("'%s' not in vocabulary, ignored.", token.c_str());
             }
@@ -40,12 +41,12 @@ void Trainer::init_docs(std::vector<std::vector<std::string> >& raw_docs) {
         _docs.emplace_back(doc);
     }
     Log::Info("Number of docs: %d", _docs.size());
-    Log::Info("Init docs done");
+    Log::Info("Init Trainer done");
 }
 
 void Trainer::train(std::vector<std::vector<std::string> >& raw_docs, int max_iter) {
     fix_random_seed();
-    init_docs(raw_docs);
+    init_trainer(raw_docs);
     Log::Info("Training...");
     int iter = 1;
     while(iter <= max_iter) {
@@ -54,8 +55,9 @@ void Trainer::train(std::vector<std::vector<std::string> >& raw_docs, int max_it
         }
         iter++;
     }
+
     Log::Info("Model trained.");
-    _model->init_topic_word_dist();
+    _model->set_topic_word_dist();
 }
 
 
