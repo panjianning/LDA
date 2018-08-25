@@ -11,6 +11,7 @@
 
 namespace LDA {
 
+//Out Of Vocabulary
 constexpr int OOV = -1;
 
 class Vocab {
@@ -19,21 +20,21 @@ public:
 
     void load(const std::string& vocab_file);
     
-    int get_id(const std::string& word) const;
+    int get_word_id(const std::string& word) const;
 
     inline std::string get_word(int id) const {
-        return _id2term[id];
+        return _id2word[id];
     }
 
     inline size_t size() const {
-        return _term2id.size();
+        return _word2id.size();
     }
 
     Vocab(const Vocab&) = delete;
     Vocab& operator=(const Vocab&) = delete;
 private:
-    std::unordered_map<std::string, int> _term2id;
-    std::vector<std::string> _id2term;
+    std::unordered_map<std::string, int> _word2id;
+    std::vector<std::string> _id2word;
 };
 
 }
