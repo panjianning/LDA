@@ -10,13 +10,15 @@
 
 namespace LDA {
 
-int Vocab::get_id(const std::string& word) const {
-    auto it = _term2id.find(word);
-    return it == _term2id.end()? OOV : it->second;
+int Vocab::get_word_id(const std::string& word) const {
+    auto it = _word2id.find(word);
+    return it == _word2id.end()? OOV : it->second;
 }
 
 void Vocab::load(const std::string& vocab_file) {
-    _term2id.clear();
+    _word2id.clear();
+    _id2word.clear();
+
     std::ifstream fin(vocab_file, std::ios::in);
     if (!fin.is_open()) {
         Log::Warning("Failed to open vocab_file!");
@@ -25,17 +27,15 @@ void Vocab::load(const std::string& vocab_file) {
     
     Log::Info("Loading vocab from: %s", vocab_file.c_str());
 
-    _id2term.clear();
-
-    std::string term;
+    std::string word;
     int id = 0;
-    while (getline(fin, term)) {
-        if (_term2id.find(term) != _term2id.end()) {
-            Log::Warning("Duplicate word [%s] in vocab file",term.c_str());
+    while (getline(fin, word)) {
+        if (_word2id.find(word) != _word2id.end()) {
+            Log::Warning("Duplicate word [%s] in vocab file",word.c_str());
             continue;
         }
-        _term2id[term] = id;
-        _id2term.push_back(term);
+        _word2id[word] = id;
+        _id2word.push_back(word);
         id++;
     }
     fin.close();
