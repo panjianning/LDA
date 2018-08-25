@@ -37,8 +37,7 @@ public:
     void train(std::vector<std::vector<std::string> >& raw_docs, int max_iter = 5);
 
 private:
-    void init_docs(std::vector<std::vector<std::string> >& raw_docs);
-
+    void init_trainer(std::vector<std::vector<std::string> >& raw_docs);
     std::shared_ptr<TopicModel> _model;
     std::unique_ptr<Sampler> _sampler;
     std::vector<LDADoc> _docs;
