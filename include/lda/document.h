@@ -10,14 +10,6 @@
 
 namespace LDA {
 
-struct Topic {
-    int tid;
-    double prob;
-    bool operator<(const Topic& t) const {
-        return prob > t.prob;
-    }
-};
-
 struct Token {
     int topic;
     int id;
@@ -35,7 +27,7 @@ public:
   
     void add_token(const Token& token);
   
-    void set_topic(int index, int new_topic);
+    void set_topic(int index, int topic);
 
     inline Token& token(size_t index) {
         return _tokens[index];
@@ -49,8 +41,8 @@ public:
         return _tokens.size();
     }
 
-    inline size_t topic_sum(int topic_id) const {
-        return _topic_sum[topic_id];
+    inline int topic_sum(int topic) const {
+        return _topic_sum[topic];
     }
 
 protected:
