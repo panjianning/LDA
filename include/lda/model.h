@@ -36,49 +36,39 @@ public:
     TopicModel(int num_topics, const std::string& vocab_file, float alpha=0.1, 
         float beta=0.01);
 
-    void init_topic_word_dist();
+    void set_topic_word_dist();
 
-    inline int term_id(const std::string& term) const {
-        return _vocab.get_id(term);
-    }
-
-    inline TopicDist& word_topic(int term_id) {
-        return _word_topic.at(term_id);
-    }
-
-    inline int word_topic(int word_id, int topic_id) const {
+    inline int get_count_by(int word_id, int topic) const {
         const TopicDist& dist = _word_topic.at(word_id);
-        if (dist.count(topic_id)) {
-            return dist.at(topic_id);
+        if (dist.count(topic)) {
+            return dist.at(topic);
         } else {
             return 0;
         }
     }
 
-    inline void insert_word_topic(int word_id, int new_topic) {
-        TopicDist& dist = _word_topic.at(word_id);
-        if (dist.count(new_topic)) {
-            dist[new_topic]++;
+    inline int get_count_by(int topic) const {
+        return _topic_sum.at(topic);
+    }
+
+    inline void add_token(Token& token) {
+        TopicDist& dist = _word_topic.at(token.id);
+        if (dist.count(token.topic)) {
+            dist[token.topic]++;
         } else {
-            dist[new_topic] = 1;
+            dist[token.topic] = 1;
         }
-        _topic_sum[new_topic]++;
+        _topic_sum[token.topic]++;
     }
 
-    inline void update_word_topic(int word_id, int old_topic, int new_topic) {
-        if (old_topic == new_topic) return;
-        TopicDist& dist = _word_topic.at(word_id);
-        dist[old_topic]--;
-        _topic_sum[old_topic]--;
-        insert_word_topic(word_id, new_topic);
+    inline void remove_token(Token& token) {
+        TopicDist& dist = _word_topic.at(token.id);
+        dist[token.topic]--;
+        _topic_sum[token.topic]--;
     }
 
-    inline uint64_t topic_sum(int topic_id) const {
-        return _topic_sum.at(topic_id);
-    }
-
-    inline std::vector<uint64_t>& topic_sum() {
-        return _topic_sum;
+    inline int word_id(const std::string& word) const {
+        return _vocab.get_word_id(word);
     }
 
     inline int num_topics() const {
@@ -116,7 +106,7 @@ public:
 private:
     std::vector<TopicDist> _word_topic;
     std::vector<WordDist> _topic_word;
-    std::vector<uint64_t> _topic_sum;
+    std::vector<int> _topic_sum;
     Vocab _vocab;
     int _num_topics;
     float _alpha;
