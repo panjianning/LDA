@@ -2,7 +2,9 @@
 [![License](https://img.shields.io/pypi/l/Django.svg)](LICENSE)
 [![Language](https://img.shields.io/badge/language-c%2B%2B-orange.svg)](src)
 
-使用Collapsed Gibbs sampling训练的Latent Dirichlet Allocation模型
+使用Collapsed Gibbs sampling训练的Latent Dirichlet Allocation模型。
+
+数学推导在[LDA.pdf](https://github.com/PanJianning/LDA/edit/master/LDA.pdf)
 
 ## 动机
 写这个项目是为了学习近似推断方法，Gibbs sampling和Variational Bayes。 原本是想参考sklearn的LDA实现，先实现online variational bayes版本的，但考虑到
